@@ -1,6 +1,6 @@
 module github.com/splenwilz/devtunnel
 
-go 1.25.5
+go 1.25.0
 
 require (
 	github.com/coder/websocket v1.8.14
