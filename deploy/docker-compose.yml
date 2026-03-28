@@ -1,0 +1,34 @@
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - tunnel-server
+
+  tunnel-server:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - DEVTUNNEL_LISTEN_ADDR=:8001
+      - DEVTUNNEL_DOMAIN=tasknify.com
+    volumes:
+      - ./server.yaml:/etc/devtunnel/server.yaml:ro
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

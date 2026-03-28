@@ -1,0 +1,20 @@
+# DevTunnel Server Configuration
+# Copy to /etc/devtunnel/server.yaml on the server
+
+listen_addr: ":8001"
+domain: "tasknify.com"
+
+heartbeat_interval: 15s
+heartbeat_timeout: 5s
+max_tunnels_per_token: 10
+
+# Auth tokens (generate hashes with: devtunnel-server hash-token <token>)
+# auth_tokens:
+#   - hash: "$2a$10$..."
+#     name: "dev-team"
+#     max_tunnels: 10
+
+rate_limit:
+  tunnel_creation_per_min: 5
+  requests_per_sec: 100
+  connections_per_min: 10

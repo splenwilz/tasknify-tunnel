@@ -1,0 +1,17 @@
+[Unit]
+Description=DevTunnel Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=devtunnel
+Group=devtunnel
+ExecStart=/usr/local/bin/devtunnel-server
+EnvironmentFile=/etc/devtunnel/server.env
+Restart=always
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

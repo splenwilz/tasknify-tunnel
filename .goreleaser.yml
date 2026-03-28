@@ -1,0 +1,54 @@
+version: 2
+
+builds:
+  - id: devtunnel
+    main: ./cmd/devtunnel
+    binary: devtunnel
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+  - id: devtunnel-server
+    main: ./cmd/devtunnel-server
+    binary: devtunnel-server
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: client
+    builds:
+      - devtunnel
+    name_template: "devtunnel_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+  - id: server
+    builds:
+      - devtunnel-server
+    name_template: "devtunnel-server_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
